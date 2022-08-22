@@ -1,0 +1,14 @@
+packages:
+    board: !include common/board-esp01_1m.yaml
+    base: !include common/standard-base.yaml
+    wifi: !include common/wifi.yaml
+    web: !include common/webserver-v1.yaml
+
+
+esphome:
+  name: evironment-sensor-2
+
+
+wifi:
+  manual_ip:
+    static_ip: !secret ip_environment2
