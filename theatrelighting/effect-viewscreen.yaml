@@ -1,0 +1,23 @@
+addressable_lambda:
+    name: "Viewscreen"
+    update_interval: 200ms
+    lambda: |-
+        #define VIEWSCREEN_ORIGIN 27
+
+        static uint16_t progress = 0;
+
+        if (initial_run) {
+            progress = 0;
+            it.all() = Color::BLACK;
+        }
+
+        it[VIEWSCREEN_ORIGIN - progress] = Color::BLACK;
+        it[VIEWSCREEN_ORIGIN + progress + 1] = Color::BLACK;
+
+        progress += 1;
+        if (progress > 16) {
+            progress = 0;
+        }
+
+        it[VIEWSCREEN_ORIGIN - progress] = current_color;
+        it[VIEWSCREEN_ORIGIN + progress + 1] = current_color;

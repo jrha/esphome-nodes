@@ -1,0 +1,94 @@
+packages:
+  board: !include common/board-esp01_1m.yaml
+  base: !include common/standard-base.yaml
+  wifi: !include common/wifi.yaml
+  web: !include common/webserver-v1.yaml
+
+
+esphome:
+  name: theatrelighting
+
+
+wifi:
+  manual_ip:
+    static_ip: !secret ip_theatrelighting
+
+
+sensor:
+  - <<: !include common/carrier-esp01s-dht11-iotmcu.yaml
+    temperature:
+      name: "Living Room Temperature"
+    humidity:
+      name: "Living Room Humidity"
+
+
+light:
+  - platform: neopixelbus
+    id: coving
+    type: GRBW
+    variant: SK6812
+    pin: GPIO3
+    num_leds: 396
+    name: "Coving Lights"
+    internal: true
+
+  - platform: partition
+    name: "Coving - Front"
+    segments:
+      - id: coving
+        from: 0
+        to: 92
+    effects:
+      - addressable_rainbow:
+      - addressable_scan:
+          move_interval: 10ms
+      - addressable_twinkle:
+          twinkle_probability: 10%
+      - addressable_fireworks:
+      - <<: !include theatrelighting/effect-viewscreen.yaml
+      - <<: !include theatrelighting/effect-redalert.yaml
+
+  - platform: partition
+    name: "Coving - Right"
+    segments:
+      - id: coving
+        from: 93
+        to: 206
+    effects:
+      - addressable_rainbow:
+      - addressable_scan:
+          move_interval: 10ms
+      - addressable_twinkle:
+          twinkle_probability: 20%
+      - addressable_fireworks:
+      - <<: !include theatrelighting/effect-redalert.yaml
+
+  - platform: partition
+    name: "Coving - Back"
+    segments:
+      - id: coving
+        from: 207
+        to: 322
+    effects:
+      - addressable_rainbow:
+      - addressable_scan:
+          move_interval: 10ms
+      - addressable_twinkle:
+          twinkle_probability: 30%
+      - addressable_fireworks:
+      - <<: !include theatrelighting/effect-redalert.yaml
+
+  - platform: partition
+    name: "Coving - Left"
+    segments:
+      - id: coving
+        from: 323
+        to: 395
+    effects:
+      - addressable_rainbow:
+      - addressable_scan:
+          move_interval: 10ms
+      - addressable_twinkle:
+          twinkle_probability: 40%
+      - addressable_fireworks:
+      - <<: !include theatrelighting/effect-redalert.yaml

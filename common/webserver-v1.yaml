@@ -1,0 +1,4 @@
+web_server:
+  version: 1
+  port: 80
+  ota: false

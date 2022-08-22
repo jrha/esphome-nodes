@@ -1,0 +1,9 @@
+# Enable logging, but not over serial
+logger:
+  baud_rate: 0
+
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret ota_password

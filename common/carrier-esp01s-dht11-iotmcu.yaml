@@ -1,0 +1,13 @@
+platform: dht
+model: DHT11
+pin: GPIO2
+
+temperature:
+  name: "Temperature"
+  filters:
+    offset: -5.5
+
+humidity:
+  name: "Humidity"
+
+update_interval: 60s
