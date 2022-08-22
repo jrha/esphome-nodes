@@ -1,0 +1,9 @@
+platform: neopixelbus
+variant: WS2812
+num_leds: 16
+type: GRB
+default_transition_length: 1s
+effects:
+  - addressable_scan:
+  - addressable_rainbow:
+      width: 16

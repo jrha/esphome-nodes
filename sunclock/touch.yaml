@@ -1,0 +1,45 @@
+esp32_touch:
+    setup_mode: false
+
+
+binary_sensor:
+  - platform: esp32_touch
+    name: "Toggle Pad"
+    pin: GPIO2
+    threshold: 500
+    on_click:
+      - if:
+          condition:
+            light.is_off: light_sun
+          then:
+            light.turn_on:
+              id: light_sun
+              brightness: 1.0
+              cold_white: 0.25
+              warm_white: 0.75
+      - if:
+          condition:
+            light.is_on: light_sun
+          then:
+            light.turn_off:
+              id: light_sun
+
+  - platform: esp32_touch
+    name: "Dim Pad"
+    pin: GPIO15
+    threshold: 500
+    on_click:
+      - min_length: 50ms
+        max_length: 350ms
+        then:
+          - light.dim_relative:
+              id: light_sun
+              relative_brightness: -10%
+              transition_length: 0.5s
+      - min_length: 350ms
+        max_length: 950ms
+        then:
+          - light.dim_relative:
+              id: light_sun
+              relative_brightness: 10%
+              transition_length: 0.5s

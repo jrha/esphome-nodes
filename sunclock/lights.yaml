@@ -1,0 +1,57 @@
+output:
+  - platform: ledc
+    id: ledc_cold
+    pin: GPIO17
+
+  - platform: ledc
+    id: ledc_warm
+    pin: GPIO16
+
+
+light:
+  - <<: !include ../common/ws2812_16pixel_ring.yaml
+    id: light_ring
+    pin: GPIO4
+    name: "Ring Light"
+    restore_mode: ALWAYS_OFF
+    effects:
+      - addressable_scan:
+      - addressable_rainbow:
+          width: 16
+      - addressable_lambda:
+          name: "Pixel Rise"
+          update_interval: 20ms
+          lambda: |-
+            static uint16_t pixel = 0;
+            static uint16_t red = 0;
+
+            if (initial_run) {
+              pixel = 0;
+              red = 0;
+              it.all() = Color::BLACK;
+            };
+
+            if (pixel >= it.size()) {
+              // Stop after one run
+              return;
+            };
+
+            it[pixel] = Color(red, 0, 0);
+
+            red += 5;
+
+            if (red > 255) {
+              red = 0;
+              pixel++;
+            };
+
+  - platform: cwww
+    id: light_sun
+    name: "Sun Light"
+    restore_mode: ALWAYS_OFF
+    cold_white: ledc_cold
+    warm_white: ledc_warm
+    default_transition_length: 1s
+    cold_white_color_temperature: 6250 K
+    warm_white_color_temperature: 1785 K
+    constant_brightness: true

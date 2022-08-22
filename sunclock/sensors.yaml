@@ -1,0 +1,4 @@
+sensor:
+  - platform: dallas
+    address: 0x032003b00164ff28
+    name: "Heatsink Temperature"

@@ -1,0 +1,7 @@
+i2c:
+  sda: GPIO19
+  scl: GPIO23
+
+
+dallas:
+  - pin: GPIO26

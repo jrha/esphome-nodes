@@ -1,0 +1,5 @@
+display:
+  - <<: !include ../common/tm1637_7seg_clock.yaml
+    id: display_7seg
+    clk_pin: GPIO18
+    dio_pin: GPIO5

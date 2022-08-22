@@ -1,0 +1,10 @@
+esp32:
+  board: lolin32_lite
+  framework:
+    type: arduino
+    version: recommended
+
+
+status_led:
+  pin:
+    number: GPIO22

@@ -1,0 +1,20 @@
+platform: tm1637
+length: 4
+update_interval: 500ms
+lambda: |-
+  static int i = 0;
+  i++;
+  auto time = id(time_sntp).now();
+
+  if (time.is_valid())
+    if ((i % 2) == 0)
+      it.strftime("%H.%M", time);
+    else
+      it.strftime("%H%M", time);
+  else
+    if      ((i % 6) == 0)  it.print("-   ");
+    else if ((i % 6) == 1)  it.print(" -  ");
+    else if ((i % 6) == 2)  it.print("  - ");
+    else if ((i % 6) == 3)  it.print("   -");
+    else if ((i % 6) == 4)  it.print("  - ");
+    else                    it.print(" -  ");

@@ -1,0 +1,54 @@
+button:
+  - platform: template
+    id: button_sunrise
+    name: "Sunrise"
+    icon: "mdi:sun"
+    on_press:
+      # Initial State
+      - logger.log: Starting Sunrise Sequence
+      - light.turn_on:
+          id: light_ring
+          brightness: 0%
+          red: 0%
+          green: 0
+          blue: 0
+          transition_length: 1s
+      - light.turn_on:
+          id: light_sun
+          cold_white: 0%
+          warm_white: 0%
+          transition_length: 1s
+      - delay: 1s
+
+      # Red Rise
+      - logger.log: Red Rise
+      - light.turn_on:
+          id: light_ring
+          effect: Pixel Rise
+      - delay: 30s
+
+      # Red Set, Amber Rise
+      - logger.log: Amber Rise
+      - light.turn_off:
+          id: light_ring
+          transition_length: 10s
+      - light.turn_on:
+          id: light_sun
+          warm_white: 100%
+          transition_length: 10s
+      - delay: 10s
+
+      # White Rise
+      - logger.log: White Rise
+      - light.turn_on:
+          id: light_sun
+          cold_white: 100%
+          transition_length: 10s
+      - delay: 10s
+
+      # Amber Set
+      - logger.log: Amber Set
+      - light.turn_on:
+          id: light_sun
+          warm_white: 0%
+          transition_length: 10s

@@ -1,0 +1,51 @@
+packages:
+  board: !include common/board-lolin32-lite.yaml
+  base: !include common/standard-base.yaml
+  wifi: !include common/wifi.yaml
+  web: !include common/webserver-v2.yaml
+
+  busses: !include sunclock/busses.yaml
+  display: !include sunclock/display.yaml
+  lights: !include sunclock/lights.yaml
+  sunrise: !include sunclock/sunrise.yaml
+  sensors: !include sunclock/sensors.yaml
+  touch: !include sunclock/touch.yaml
+
+
+esphome:
+  name: sunclock
+  on_boot:
+    then:
+      - light.turn_off:
+          id: light_sun
+      - light.turn_off:
+          id: light_ring
+      - lambda: |-
+          // Blank the display at boot
+          id(display_7seg).print("____");
+
+
+wifi:
+  manual_ip:
+    static_ip: !secret ip_sunclock
+
+
+time:
+  - platform: ds1307
+    id: time_rtc
+    update_interval: never
+
+  - platform: sntp
+    id: time_sntp
+    <<: !include common/sntp.yaml
+    on_time_sync:
+      then:
+        ds1307.write_time:
+    on_time:
+      # Every morning on weekdays
+      - seconds: 0
+        minutes: 30
+        hours: 8
+        days_of_week: MON-FRI
+        then:
+          - button.press: button_sunrise

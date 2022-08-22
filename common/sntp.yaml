@@ -1,0 +1,4 @@
+servers:
+  - !secret ip_ntp_server
+  - 1.uk.pool.ntp.org
+  - 2.uk.pool.ntp.org
