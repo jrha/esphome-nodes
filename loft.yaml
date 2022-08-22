@@ -1,0 +1,30 @@
+packages:
+    board: !include common/board-esp01_1m.yaml
+    base: !include common/standard-base.yaml
+    wifi: !include common/wifi.yaml
+    web: !include common/webserver-v1.yaml
+
+
+esphome:
+  name: loft
+
+
+wifi:
+  manual_ip:
+    static_ip: !secret ip_loft
+
+
+dallas:
+  - pin: GPIO0
+
+
+sensor:
+  - <<: !include common/carrier-esp01s-dht11-iotmcu.yaml
+    temperature:
+      name: "Loft Temperature (DHT)"
+    humidity:
+      name: "Loft Humidity (DHT)"
+
+  - platform: dallas
+    address: 0x2a0621c1c3e10628
+    name: "Loft Temperature (1-Wire)"
